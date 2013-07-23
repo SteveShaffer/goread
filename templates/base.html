@@ -89,6 +89,18 @@
 		.story-content.short {
 			max-width: 650px;
 		}
+		.story-content-switch {
+			position: relative;
+		}
+		.story-content-switch.tall {
+			min-height: 600px;
+		}
+		.google-ad-tall {
+			position: relative;
+			left: 660px;
+			width: 160px;
+			height: 600px;
+		}
 		.story-footer {
 			background-color: #f5f5f5;
 			padding-left: 7px;
@@ -570,23 +582,22 @@
 					</div>
 					<div ng-show="($index == currentStory || (opts.expanded && !collapsed)) && (opts.expanded || !storyCollapse)">
 						<div class="story-content" ng-click="setCurrent($index, true, true)" ng-class="{short: opts.nav}">
-							<h3 dir="auto"><a ng-href="{{`{{s.Link}}`}}" target="_blank" ng-bind="s.Title"></a></h3>
-							<p><small>
-								from <a ng-href="{{`{{s.feed.HtmlUrl}}`}}" ng-bind="s.feed.Title" target="_blank"></a>
-								<span ng-show="s.Author">by {{`{{s.Author}}`}}</span>
-							</small></p>
 							<div ng-switch on="$index == currentStory || (opts.expanded && !collapsed)">
-								<div ng-switch-when="true">
+								<div ng-switch-when="true" class="story-content-switch" ng-class="{tall: opts.nav && adTall}">
+									<h3 dir="auto"><a ng-href="{{`{{s.Link}}`}}" target="_blank" ng-bind="s.Title"></a></h3>
+									<p><small>
+										from <a ng-href="{{`{{s.feed.HtmlUrl}}`}}" ng-bind="s.feed.Title" target="_blank"></a>
+										<span ng-show="s.Author">by {{`{{s.Author}}`}}</span>
+									</small></p>
 									<div ng-bind-html-unsafe="contents[s.guid]" class="clearfix" dir="auto"></div>
+									{{if .GoogleAdT}}<div class="google-ad-tall" ng-show="opts.nav && adTall"></div>{{end}}
 									<div ng-show="s.MediaContent" ng-switch on="s.MediaContent != undefined">
 										<div ng-switch-when="true">
 											<audio {{htmlattr `ng-src="{{s.MediaContent}}"`}} controls="controls"></audio>
 											<a {{htmlattr `ng-href="{{s.MediaContent}}"`}} target="_blank">Original audio source</a>
 										</div>
 									</div>
-									{{if .GoogleAd}}
-									<div class="google-ad">{{.GoogleAd}}</div>
-									{{end}}
+									{{if .GoogleAd}}<div class="google-ad"></div>{{end}}
 								</div>
 							</div>
 						</div>
@@ -776,6 +787,17 @@
 	<script src="/static/js/sortable.js"></script>
 	<script src="/static/js/moment.min.js"></script>
 	<script src="/static/js/site.js"></script>
+
+	{{if .GoogleAd}}
+		<script type="text/javascript">
+			GOOGLE_AD = "{{.GoogleAd}}";
+		</script>
+	{{end}}
+	{{if .GoogleAdT}}
+		<script type="text/javascript">
+			GOOGLE_ADT = "{{.GoogleAdT}}";
+		</script>
+	{{end}}
 
 	{{.MiniProfiler}}
 

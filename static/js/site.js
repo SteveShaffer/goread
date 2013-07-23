@@ -213,6 +213,13 @@ goReadAppModule.controller('GoreadCtrl', function($scope, $http, $timeout, $wind
 				if (!isClick || eTop < 0 || eTop > $('#story-list').height() || (isClick && !middleClick && !noOpen && $scope.opts.expanded)) {
 					se[0].scrollIntoView();
 				}
+				$scope.adTall = se.width() > 650 + 10 + 160;
+				if (!$scope.adTall) {
+					$('.google-ad', se).html(GOOGLE_AD);
+				}
+				else {
+					$('.google-ad-tall', se).html(GOOGLE_ADT);
+				}
 			});
 		}
 		if (!middleClick && !noOpen) {
